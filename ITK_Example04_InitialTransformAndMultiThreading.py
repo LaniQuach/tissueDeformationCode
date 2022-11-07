@@ -55,6 +55,7 @@ moving_image_transformix = itk.imread('data/newTransformedImage.png', itk.F)
 
 deformation_field = itk.transformix_deformation_field(moving_image_transformix, result_transform_parameters)
 
+
 # Update filter object (required)
 # elastix_object.UpdateLargestPossibleRegion()
 
@@ -70,6 +71,13 @@ print(array)
 %matplotlib inline
 
 deformation_field = np.asarray(deformation_field).astype(np.float32)
+
+new = " ".join(str(x) for x in deformation_field)
+print(new)
+
+file = open('output/outputDeformationField.txt')
+file.write(new)
+file.close()
 
 # Plot images
 fig, axs = plt.subplots(2, 2, sharey=True, figsize=[30,30])
