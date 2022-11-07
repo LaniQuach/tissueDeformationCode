@@ -21,6 +21,7 @@
 
 import itk
 import matplotlib.pyplot as plt
+import numpy as np
 
 # In[7]:
 
@@ -47,7 +48,12 @@ parameter_object.AddParameterFile('data/parameters_BSpline.txt')
 result_image, result_transform_parameters = itk.elastix_registration_method(
     fixed_image, moving_image,
     parameter_object=parameter_object,
+    output_directory = 'output/',
     log_to_console=False)
+
+moving_image_transformix = itk.imread('data/newTransformedImage.png', itk.F)
+
+deformation_field = itk.transformix_deformation_field(moving_image_transformix, result_transform_parameters)
 
 # Update filter object (required)
 # elastix_object.UpdateLargestPossibleRegion()
@@ -56,9 +62,27 @@ result_image, result_transform_parameters = itk.elastix_registration_method(
 # result_image = elastix_object.GetOutput()
 # result_transform_parameters = elastix_object.GetTransformParameterObject()
 array = itk.GetArrayFromImage(result_image)
-plt.imshow(result_image)
-plt.savefig(r'transform11_2.png')
+# plt.axis('off')
+# plt.imshow(result_image)
+# plt.savefig(r'transform11_2.png')
 print(array)
+
+%matplotlib inline
+
+deformation_field = np.asarray(deformation_field).astype(np.float32)
+
+# Plot images
+fig, axs = plt.subplots(2, 2, sharey=True, figsize=[30,30])
+plt.figsize=[100,100]
+axs[0,0].imshow(deformation_field[:,:,1])
+axs[0,0].set_title('Deformation Field X', fontsize=30)
+axs[0,1].imshow(deformation_field[:,:,0])
+axs[0,1].set_title('Deformation Field Y', fontsize=30)
+
+
+plt.show()
+plt.savefig(r'deformation11_7.png')
+
 
 
 # Pointing from a transform parameter file to the path of a second initial transform parameter file is supported from the 0.7.0 release of ITKElastix.
