@@ -16,19 +16,14 @@
 
 # ### Registration
 
-# In[1]:
-
-
 import itk
 import matplotlib.pyplot as plt
 import numpy as np
 
-# In[7]:
-
 
 # Import Images
-moving_image = itk.imread('data/newTestImage.png', itk.F)
-fixed_image = itk.imread('data/newTransformedImage.png', itk.F)
+moving_image = itk.imread('transformingTestImage/newTestImage.png', itk.F)
+fixed_image = itk.imread('transformingTestImage/newTransformedImage.png', itk.F)
 
 # Import Default Parameter Map
 parameter_object = itk.ParameterObject.New()
@@ -60,43 +55,27 @@ result_transform_parameters = elastix_object.GetTransformParameterObject()
 plt.axis('off')
 
 plt.imshow(result_image)
-plt.savefig(r'result11_7.png')
-
-
 #itk.imwrite(result_image, 'output/result_image_11_7.nii')
 
-moving_image_transformix = itk.imread('data/align0.1LAP_05CROPPED_55.png', itk.F)
 
-deformation_field = itk.transformix_deformation_field(moving_image_transformix, result_transform_parameters)
+#########Deformation Field#########
+# moving_image_transformix = itk.imread('transformingTestImage/newTransformedImage.png', itk.F)
+# deformation_field = itk.transformix_deformation_field(moving_image_transformix, result_transform_parameters)
 
+# array = itk.GetArrayFromImage(result_image)
 
-# Update filter object (required)
-# elastix_object.UpdateLargestPossibleRegion()
+# deformation_field2 = np.asarray(deformation_field).astype(np.float32)
+# # print(deformation_field)
+# # file = open('output/outputDeformationField.txt', 'w')
+# # file.write(" ".join(str(x) for x in deformation_field))
+# # file.close()
 
-# # Results of Registration
+# #Plot images
+# fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
+# plt.figsize=[100,100]
+# axs[0].imshow(deformation_field[:,:,1])
+# axs[0].set_title('Deformation Field X', fontsize=30)
+# axs[1].imshow(deformation_field[:,:,0])
+# axs[1].set_title('Deformation Field Y', fontsize=30)
 
-array = itk.GetArrayFromImage(result_image)
-# print(array)
-
-deformation_field = np.asarray(deformation_field).astype(np.float32)
-print(deformation_field)
-file = open('output/outputDeformationField.txt', 'w')
-file.write(" ".join(str(x) for x in deformation_field))
-file.close()
-
-#Plot images
-fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
-plt.figsize=[100,100]
-axs[0].imshow(deformation_field[:,:,1])
-axs[0].set_title('Deformation Field X', fontsize=30)
-axs[1].imshow(deformation_field[:,:,0])
-axs[1].set_title('Deformation Field Y', fontsize=30)
-plt.savefig(r'deformation11_7.png')
-
-plt.show()
-plt.colorbar()
-
-
-
-
-# Pointing from a transform parameter file to the path of a second initial transform parameter file is supported from the 0.7.0 release of ITKElastix.
+# plt.colorbar()
