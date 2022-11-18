@@ -23,6 +23,4 @@ bottom = height
 resizedCrop = resized.crop((left, top, right, bottom))
 resizedCrop.show()
 
-# print(f"Original size : {image.size}")
-# print(f"New size : {resizedCrop.size}")
 resizedCrop.save('newTransformedImage.png')

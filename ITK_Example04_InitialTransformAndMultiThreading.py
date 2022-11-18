@@ -19,11 +19,14 @@
 import itk
 import matplotlib.pyplot as plt
 import numpy as np
-
+from PIL import Image
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # Import Images
 fixed_image = itk.imread('transformingTestImage/newTestImage.png', itk.F)
 moving_image = itk.imread('transformingTestImage/newTransformedImage.png', itk.F)
+# fixed_image = itk.imread('data/align0.1LAP_05CROPPED_30.png', itk.F)
+# moving_image = itk.imread('data/align0.1LAP_05CROPPED_55.png', itk.F)
 
 # Import Default Parameter Map
 parameter_object = itk.ParameterObject.New()
@@ -47,27 +50,36 @@ result_transform_parameters = elastix_object.GetTransformParameterObject()
 plt.axis('off')
 
 plt.imshow(result_image)
+
 #itk.imwrite(result_image, 'output/result_image_11_7.nii')
 
 #########Deformation Field#########
 deformation_field = itk.transformix_deformation_field(moving_image, result_transform_parameters)
 
-array = itk.GetArrayFromImage(result_image)
+# array = itk.GetArrayFromImage(result_image)
 
 deformation_field2 = np.asarray(deformation_field).astype(np.float32)
 
-# Write the raw data to a file
-# print(deformation_field)
-# file = open('output/outputDeformationField.txt', 'w')
-# file.write(" ".join(str(x) for x in deformation_field))
-# file.close()
+# # Write the raw data to a file
+# # print(deformation_field)
+# # file = open('output/outputDeformationField.txt', 'w')
+# # file.write(" ".join(str(x) for x in deformation_field))
+# # file.close()
 
-#Plot images
+# #Plot images
 fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
 plt.figsize=[100,100]
-axs[0].imshow(deformation_field[:,:,1])
+im2 = axs[0].imshow(deformation_field[:,:,1])
+divider = make_axes_locatable(axs[0])
+cax = divider.append_axes('right', size='5%', pad=0.05)
+fig.colorbar(im2, cax=cax, orientation='vertical');
 axs[0].set_title('Deformation Field X', fontsize=30)
-axs[1].imshow(deformation_field[:,:,0])
+
+im3 = axs[1].imshow(deformation_field[:,:,0])
 axs[1].set_title('Deformation Field Y', fontsize=30)
+divider = make_axes_locatable(axs[1])
+cax = divider.append_axes('right', size='5%', pad=0.05)
+fig.colorbar(im3, cax=cax, orientation='vertical');
+
 
 # plt.colorbar()
