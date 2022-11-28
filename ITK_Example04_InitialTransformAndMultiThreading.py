@@ -39,7 +39,7 @@ elastix_object = itk.ElastixRegistrationMethod.New(fixed_image, moving_image)
 elastix_object.SetParameterObject(parameter_object)
 
 # Set additional options
-elastix_object.SetLogToConsole(True)
+elastix_object.SetLogToConsole(False)
 
 # Update filter object (required)
 elastix_object.UpdateLargestPossibleRegion()
@@ -51,12 +51,15 @@ plt.axis('off')
 
 plt.imshow(result_image)
 
-#itk.imwrite(result_image, 'output/result_image_11_7.nii')
+itk.imwrite(result_image, 'output/result_image_11_7.nii')
 
 #########Deformation Field#########
 deformation_field = itk.transformix_deformation_field(moving_image, result_transform_parameters)
 
-# array = itk.GetArrayFromImage(result_image)
+array = itk.GetArrayFromImage(fixed_image)
+file = open('output/outputArrayOG.txt', 'w')
+file.write(" ".join(str(x) for x in array))
+file.close()
 
 deformation_field2 = np.asarray(deformation_field).astype(np.float32)
 
