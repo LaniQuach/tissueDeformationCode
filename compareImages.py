@@ -9,25 +9,11 @@ from PIL import Image
 import numpy as np
 from numpy import asarray
 from matplotlib import pyplot as plt
+import pandas as pd
 import itk
 
 fixed_image = itk.imread('transformingTestImage/newTestImage.png', itk.F)
 result_image = itk.imread('output/result_image_11_7.nii', itk.F)
-# transformedImage = Image.open('output/finalMichLogoUsingBSpline.png')
-# ogImage = Image.open('output/newTransformedImage.png')
-
-# #crop images
-# width, height = ogImage.size
-# left = (width/9)
-# right = width - (width/9)
-# top = 0
-# bottom = height
-
-# ogImage1 = ogImage.crop((left, top, right, bottom))
-# transformedImage1 = transformedImage.crop((left, top, right, bottom))
-
-# ogArray = np.array(ogImage1)
-# transformedArray = np.array(transformedImage1)
 
 ogArray = itk.GetArrayFromImage(fixed_image)
 transformedArray = itk.GetArrayFromImage(result_image)
@@ -40,18 +26,32 @@ ogArray = (ogArray-minValOG)/(maxValOG-minValOG)
 maxVal_Transformed = np.max(transformedArray)
 minVal_Transformed = np.min(transformedArray)
 transformedArray = (transformedArray-minVal_Transformed)/(maxVal_Transformed-minVal_Transformed)  
+#####
 
-newArray_orig = ogArray[:,40:290]
-newArray_transform = transformedArray[:,40:290]
+#crop the two arrays to just the M logo
+newArray_orig = ogArray[10:210,40:290]
+newArray_transform = transformedArray[10:210,40:290]
+
+rel_error = np.zeros(newArray_transform.shape)
+rel_error[newArray_orig != 0] = (newArray_transform[newArray_orig != 0] - newArray_orig[newArray_orig != 0] )/newArray_orig[newArray_orig != 0]
 
 outArray = np.subtract(newArray_transform, newArray_orig)
-print(outArray)
+
+avg = np.mean(rel_error)
+maxVal = np.max(np.abs(outArray))
+minVal = np.min(np.abs(outArray))
+std = np.std(rel_error)
+
+print("avg: ", avg)
+print("standard deviation", std)
+print("max: ", maxVal)
+print("min: ", minVal)
+
 im = plt.imshow(outArray)
 plt.colorbar(im)
+plt.axis('off')
 
-file = open('output/test.txt', 'w')
-file.write(" ".join(str(x) for x in outArray))
-file.close()
+
 
 
 
