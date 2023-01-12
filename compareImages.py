@@ -9,11 +9,14 @@ from PIL import Image
 import numpy as np
 from numpy import asarray
 from matplotlib import pyplot as plt
+import matplotlib.image as mpimg
 import pandas as pd
 import itk
 
-fixed_image = itk.imread('transformingTestImage/newTestImage.png', itk.F)
-result_image = itk.imread('output/result_image_11_7.nii', itk.F)
+
+fixed_image = itk.imread('output/ogImage1.png', itk.F)
+moving_image = itk.imread('output/movingImage.png', itk.F)
+result_image = itk.imread('output/elastixResults_1_12.png', itk.F)
 
 ogArray = itk.GetArrayFromImage(fixed_image)
 transformedArray = itk.GetArrayFromImage(result_image)
@@ -29,13 +32,21 @@ transformedArray = (transformedArray-minVal_Transformed)/(maxVal_Transformed-min
 #####
 
 #crop the two arrays to just the M logo
-newArray_orig = ogArray[10:210,40:290]
-newArray_transform = transformedArray[10:210,40:290]
+newArray_orig = ogArray[40:250,100:345]
+newArray_transform = transformedArray[40:250,100:345]
 
 rel_error = np.zeros(newArray_transform.shape)
-rel_error[newArray_orig != 0] = (newArray_transform[newArray_orig != 0] - newArray_orig[newArray_orig != 0] )/newArray_orig[newArray_orig != 0]
+rel_error[newArray_orig != 0] = (newArray_transform[newArray_orig != 0]
+                                 - newArray_orig[newArray_orig != 0] )
+
+
 
 outArray = np.subtract(newArray_transform, newArray_orig)
+plt.figure()
+result = plt.imshow(outArray)
+plt.colorbar(result)
+plt.axis('off')
+plt.savefig('output/difference2.png')
 
 avg = np.mean(rel_error)
 maxVal = np.max(np.abs(outArray))
@@ -47,9 +58,37 @@ print("standard deviation", std)
 print("max: ", maxVal)
 print("min: ", minVal)
 
-im = plt.imshow(outArray)
-plt.colorbar(im)
-plt.axis('off')
+
+
+
+# fig = plt.figure(figsize=(9, 7))
+
+# fig.add_subplot(2,2,1)
+# fixed = plt.imshow(fixed_image)
+# plt.colorbar(fixed)
+# plt.axis('off')
+# plt.title("Original Image")
+
+# fig.add_subplot(2,2,2)
+# moving = plt.imshow(moving_image)
+# plt.colorbar(moving)
+# plt.axis('off')
+# plt.title("Stretched Image")
+
+# fig.add_subplot(2,2,3)
+# result = plt.imshow(transformedArray)
+# plt.colorbar(result)
+# plt.axis('off')
+# plt.title("Elastix Image")
+
+# fig.add_subplot(2,2,4)
+# im = plt.imshow(outArray)
+# plt.colorbar(im)
+# plt.axis('off')
+# plt.title("Difference")
+# plt.savefig('output/difference2.png')
+
+# plt.axis('off')
 
 
 
