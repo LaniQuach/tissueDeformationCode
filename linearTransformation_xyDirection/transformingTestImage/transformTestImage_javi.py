@@ -13,10 +13,6 @@ import numpy as np
 from numpy import asarray
 import matplotlib.pyplot as plt
 
-# Load image and converted to grayscale
-
-
-
 def transformImage(imageLocation):
     image = Image.open(imageLocation)
     image = rgb2gray(np.array(image)[:,:,0:3])
