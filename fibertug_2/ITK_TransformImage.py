@@ -21,6 +21,8 @@ import SimpleITK as sitk
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
+from skimage.io import imread
+
 from numpy import asarray
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
@@ -84,6 +86,7 @@ plt.savefig('output/elastixResults.png')
 print(np.max(result_array))
 ######### Deformation Field #########
 deformation_field = itk.transformix_deformation_field(moving_image, result_transform_parameters)
+defArray = itk.GetArrayFromImage(deformation_field).astype(float)*0.908
 
 # write 
 # array = itk.GetArrayFromImage(fixed_image)
@@ -96,26 +99,32 @@ deformation_field = itk.transformix_deformation_field(moving_image, result_trans
 # # file.write(" ".join(str(x) for x in deformation_field))
 # # file.close()
 
+mask_1 = np.asarray(imread('transformingTestImage/Mask_25.png', as_gray=True))
+defArray[mask_1==0] = np.nan
+
 #Plot images
 fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
-# plt.figsize=[100,100]
-
-im3 = axs[1].imshow(deformation_field[:,:,0])
+im3 = axs[1].imshow(defArray[:,:,0], vmin = -15, vmax = 15)
 divider = make_axes_locatable(axs[1])
 cax = divider.append_axes('right', size='5%', pad=0.05)
 cbar = fig.colorbar(im3, cax=cax, orientation='vertical');
 cbar.ax.tick_params(labelsize=30)
 
-im2 = axs[0].imshow(deformation_field[:,:,1])
+
+im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -5, vmax = 5)
 divider = make_axes_locatable(axs[0])
 cax = divider.append_axes('right', size='5%', pad=0.05)
 cbar2 = fig.colorbar(im2, cax=cax, orientation='vertical');
 cbar2.ax.tick_params(labelsize=30)
+axs[0].axis('off')
+axs[1].axis('off')
+axs[0].set_title('Displacement Field Y', fontsize=30)
+axs[1].set_title('Displacement Field X', fontsize=30)
 
-axs[0].set_title('Deformation Field X', fontsize=30)
-axs[1].set_title('Deformation Field Y', fontsize=30)
+plt.savefig('output/Displacement.png')
 
-plt.savefig('output/deformationField.png')
+np.save('comparisionPlots/displacement_x.npy', defArray[:,:,0])
+np.save('comparisionPlots/displacement_y.npy', defArray[:,:,1]*-1)
 
 #as a note next time save the above file with the colorbar being the same for both
 
