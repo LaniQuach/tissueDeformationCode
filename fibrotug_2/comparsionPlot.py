@@ -64,6 +64,16 @@ elastix_disp = {}
 elastix_disp['x'] = elastix_x[x_25, y_25]
 elastix_disp['y'] = elastix_y[x_25, y_25]
 
+#linear regression
+lres_x = linregress(disp['x'],  elastix_disp['x'])
+slope_x = lres_x.slope
+intercept_x = lres_x.intercept
+
+lres_y = linregress(disp['y'],  elastix_disp['y'])
+slope_y = lres_y.slope
+intercept_y = lres_y.intercept
+
+#r^2
 r2_x = linregress(disp['x'],  elastix_disp['x']).rvalue**2
 r2_y = linregress(disp['y'],  elastix_disp['y']).rvalue**2
 
@@ -73,6 +83,7 @@ x = [-12,12]
 axs[0].plot(x, x, color = 'blue')
 axs[0].set_title('x direction')
 axs[0].annotate('R2=%2.3f' % r2_x, (0.05,0.9), xycoords='axes fraction')
+axs[0].annotate('y=%2.3f' % slope_x + 'x + %2.3f' % intercept_x, (0.05,0.85), xycoords='axes fraction')
 axs[0].set_xlabel("emmas")
 axs[0].set_ylabel("elastix")
 
@@ -81,7 +92,10 @@ x2 = [-3,5]
 axs[1].plot(x2, x2, color = 'blue')
 axs[1].set_title('y direction')
 axs[1].annotate('R2=%2.3f' % r2_y, (0.05,0.9), xycoords='axes fraction')
+axs[1].annotate('y=%2.3f' % slope_y + 'x + %2.3f' % intercept_y, (0.05,0.85), xycoords='axes fraction')
 axs[1].set_xlabel("emmas")
+
+fig.suptitle('FibroTug Elastix v Emmas Comparsion Plots', fontsize=12)
 
 plt.savefig('comparisionPlots/Emma_v_Elastics_plot.png')
 

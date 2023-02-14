@@ -59,6 +59,21 @@ analytical_disp = {}
 analytical_disp['x'] = analytical_x[x_41, y_41]
 analytical_disp['y'] = analytical_y[x_41, y_41]
 
+#error
+disp_analytical = np.vstack([analytical_disp['x'], analytical_disp['y']]).T
+disp_emmas = np.vstack([disp['x'], disp['y']]).T
+error_emmas = np.linalg.norm(disp_analytical-disp_emmas)
+
+#linear regression
+lres_x = linregress(analytical_disp['x'],  disp['x'])
+slope_x = lres_x.slope
+intercept_x = lres_x.intercept
+
+lres_y = linregress(analytical_disp['y'],  disp['y'])
+slope_y = lres_y.slope
+intercept_y = lres_y.intercept
+
+#r^2 values
 r2_x = linregress(disp['x'],  analytical_disp['x']).rvalue**2
 r2_y = linregress(disp['y'],  analytical_disp['y']).rvalue**2
 
@@ -66,8 +81,10 @@ fig, axs = plt.subplots(1, 2)
 axs[0].scatter(analytical_disp['x'], disp['x'], marker = '.', color='gold')
 x = [-10,10]
 axs[0].plot(x, x, color = 'blue')
+axs[0].set_yticks(np.arange(min(x), max(x)+1, 2.5))
 axs[0].set_title('x direction')
 axs[0].annotate('R2=%2.3f' % r2_x, (0.05,0.9), xycoords='axes fraction')
+axs[0].annotate('y=%2.3f' % slope_x + 'x + %2.3f' % intercept_x, (0.05,0.85), xycoords='axes fraction')
 axs[0].set_ylabel("emmas")
 axs[0].set_xlabel("analytical")
 
@@ -76,7 +93,12 @@ x2 = [-8,2]
 axs[1].plot(x2, x2, color = 'blue')
 axs[1].set_title('y direction')
 axs[1].annotate('R2=%2.3f' % r2_y, (0.05,0.9), xycoords='axes fraction')
+axs[1].annotate('y=%2.3f' % slope_y + 'x + %2.3f' % intercept_y, (0.05,0.85), xycoords='axes fraction')
 axs[1].set_xlabel("analytical")
+
+fig.suptitle(' In-Silico Emmas v Analytical Comparsion Plots', fontsize=12)
+txt="error: %2.3f" % error_emmas
+plt.figtext(0.5, -0.01, txt, wrap=True, horizontalalignment='center', fontsize=9)
 
 plt.savefig('comparisionPlots/Emma_v_Analytical_plot.png')
 
