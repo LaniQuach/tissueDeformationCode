@@ -20,7 +20,7 @@ analytical_x = np.load('comparisionPlots/analytical_dispx_45.npy').T
 analytical_y = (np.load('comparisionPlots/analytical_dispy_45.npy')*-1).T
 
 elastix_x = np.load('comparisionPlots/displacement_x.npy').T
-elastix_y = (np.load('comparisionPlots/displacement_y.npy')*-1).T
+elastix_y = (np.load('comparisionPlots/displacement_y.npy')).T
 
 mask = np.asarray(imread('transformingTestImage/Mask_41.png', as_gray=True)).T
 

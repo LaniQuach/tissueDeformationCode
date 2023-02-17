@@ -17,7 +17,7 @@ pos['x'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_col.txt')
 pos['y'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_row.txt')
 
 analytical_x = np.load('comparisionPlots/analytical_dispx_45.npy').T
-analytical_y = (np.load('comparisionPlots/analytical_dispy_45.npy')*-1).T
+analytical_y = (np.load('comparisionPlots/analytical_dispy_45.npy')).T
 
 mask = np.asarray(imread('transformingTestImage/Mask_41.png', as_gray=True)).T
 
