@@ -48,13 +48,15 @@ rel_error = np.zeros(newArray_transform.shape)
 rel_error[newArray_orig != 0] = (newArray_transform[newArray_orig != 0]
                                  - newArray_orig[newArray_orig != 0] )
 
-outArray = np.subtract(newArray_transform, newArray_orig)
+outArray = np.subtract(newArray_transform, newArray_orig)/newArray_orig
 
 plt.figure()
-result = plt.imshow(outArray)
+result = plt.imshow(outArray, vmin = -0.5, vmax = 0.5, cmap='plasma')
 plt.axis('off')
-plt.colorbar(result)
-plt.savefig('output/errorDifference.png')
+plt.title('Relative Error')
+cbar = plt.colorbar(result)
+cbar.set_label(label = 'error', size = 10)
+plt.savefig('output/errorDifference.png', dpi = 200)
 
 avg = np.mean(np.abs(rel_error))
 maxVal = np.max(np.abs(outArray))
@@ -88,7 +90,7 @@ im = plt.imshow(outArray)
 plt.colorbar(im)
 plt.axis('off')
 plt.title("Difference", fontsize = 20)
-plt.savefig('output/difference2.png')
+plt.savefig('fibrotug_2/output/difference2.png')
 
 plt.axis('off')
 

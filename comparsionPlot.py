@@ -98,7 +98,7 @@ def displayComparisionPlots(displacementArray_x, displacementArray_y, movingMask
     axs[0].set_title('x direction')
     axs[0].annotate('R2=%2.3f' % r2_x, (0.05,0.9), xycoords='axes fraction')
     axs[0].annotate('y=%2.3f' % slope_x + 'x + %2.3f' % intercept_x, (0.05,0.85), xycoords='axes fraction')
-    axs[0].set_xlabel("emmas")
+    axs[0].set_xlabel("Optical Flow")
     axs[0].set_ylabel("elastix")
     
     axs[1].scatter(disp['y'], elastix_disp['y'], marker = '.', color='gold')
@@ -107,9 +107,9 @@ def displayComparisionPlots(displacementArray_x, displacementArray_y, movingMask
     axs[1].set_title('y direction')
     axs[1].annotate('R2=%2.3f' % r2_y, (0.05,0.9), xycoords='axes fraction')
     axs[1].annotate('y=%2.3f' % slope_y + 'x + %2.3f' % intercept_y, (0.05,0.85), xycoords='axes fraction')
-    axs[1].set_xlabel("emmas")
+    axs[1].set_xlabel("Optical Flow")
     
-    fig.suptitle('FibroTug Elastix v Emmas Comparsion Plots', fontsize=12)
+    fig.suptitle('FibroTug Elastix v Optical Flow Comparsion Plots', fontsize=12)
     
     if save:
         plt.savefig('fibrotug_2/comparisionPlots/comparison_plot.png', dpi = 180)

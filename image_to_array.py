@@ -39,16 +39,20 @@ def imageToArray(imageFileName1, imageFileName2, mask1, mask2):
     return [image_array, image_2_array]
       
 
-def display_bothImages(image_array, image_2_array):
+def display_bothImages(image_array, image_2_array, save):
     # Visualize
     fig, axs = plt.subplots(2, 1, num=1, clear=True)
-    axs[0].imshow(image_array)
+    axs[0].imshow(image_array, cmap = 'Greys')
+    
     axs[0].axis('off')
     axs[0].set_title('Relaxed')
     
-    axs[1].imshow(image_2_array)
+    axs[1].imshow(image_2_array, cmap = 'Greys')
     axs[1].axis('off')
     axs[1].set_title('Contracted')
+    
+    if save:
+        plt.savefig('fibrotug_2/output/original_contracted_image', dpi = 210)
     
 
 

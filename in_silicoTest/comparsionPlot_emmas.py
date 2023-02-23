@@ -17,7 +17,7 @@ pos['x'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_col.txt')
 pos['y'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_row.txt')
 
 analytical_x = np.load('comparisionPlots/analytical_dispx_45.npy').T
-analytical_y = (np.load('comparisionPlots/analytical_dispy_45.npy')).T
+analytical_y = (np.load('comparisionPlots/analytical_dispy_45.npy')*-1).T
 
 mask = np.asarray(imread('transformingTestImage/Mask_41.png', as_gray=True)).T
 
@@ -88,10 +88,10 @@ axs[0].annotate('y=%2.3f' % slope_x + 'x + %2.3f' % intercept_x, (0.05,0.85), xy
 axs[0].set_ylabel("emmas")
 axs[0].set_xlabel("analytical")
 
-axs[1].scatter(analytical_disp['y'], disp['y'], marker = '.', color='gold')
-x2 = [-8,7]
+axs[1].scatter(analytical_disp['y'], disp['y']*-1, marker = '.', color='gold')
+x2 = [-2, 8]
 axs[1].plot(x2, x2, color = 'blue')
-axs[1].set_xlim(-8, 7)
+axs[1].set_xlim(-2, 8)
 axs[1].set_title('y direction')
 axs[1].annotate('R2=%2.3f' % r2_y, (0.05,0.9), xycoords='axes fraction')
 axs[1].annotate('y=%2.3f' % slope_y + 'x + %2.3f' % intercept_y, (0.05,0.85), xycoords='axes fraction')
@@ -99,7 +99,7 @@ axs[1].set_xlabel("analytical")
 
 fig.suptitle(' In-Silico Emmas v Analytical Comparsion Plots', fontsize=12)
 txt="error: %2.3f" % error_emmas
-plt.figtext(0.5, -0.01, txt, wrap=True, horizontalalignment='center', fontsize=9)
+plt.figtext(0.5, 0.01, txt, wrap=True, horizontalalignment='center', fontsize=9)
 
 plt.savefig('comparisionPlots/Emma_v_Analytical_plot.png')
 

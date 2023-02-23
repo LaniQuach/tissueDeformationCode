@@ -85,6 +85,22 @@ def displacement_field_elastix(originalArray, movingArray, parameterFileName, ma
     
     return defArray
 
+def displacement_field_elastix_withoutmask(originalArray, movingArray, parameterFileName):
+    """
+    displacement_field_elastix creates a displacement field of the two images brought in
+
+    :param originalArray: original array of the image before contraction/movement
+    :param movingArray: array of image during contraction/movement
+    :param parameterFileName: name of the file with the ideal parameters for elastix transformation
+    :return: the displacement field array
+    """ 
+    resultParameters = elastix_transformation(originalArray, movingArray, parameterFileName)
+    movingImage = itk.GetImageFromArray(movingArray)
+    deformation_field = itk.transformix_deformation_field(movingImage, resultParameters)
+    defArray = itk.GetArrayFromImage(deformation_field).astype(float)*0.908
+    
+    return defArray
+
 def display_save_displacement(defArray):
     #Plot images
     fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
@@ -92,12 +108,15 @@ def display_save_displacement(defArray):
     divider = make_axes_locatable(axs[1])
     cax = divider.append_axes('right', size='5%', pad=0.05)
     cbar = fig.colorbar(im3, cax=cax, orientation='vertical');
+    cbar.set_label('displacement (pixels)', fontsize = 25)
+
     cbar.ax.tick_params(labelsize=30)
     
     im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -5, vmax = 5)
     divider = make_axes_locatable(axs[0])
     cax = divider.append_axes('right', size='5%', pad=0.05)
     cbar2 = fig.colorbar(im2, cax=cax, orientation='vertical');
+    cbar2.set_label('displacement (pixels)', fontsize = 25)
     cbar2.ax.tick_params(labelsize=30)
     axs[0].axis('off')
     axs[1].axis('off')

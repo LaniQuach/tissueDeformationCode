@@ -7,7 +7,7 @@ Created on Thu Feb  9 13:36:39 2023
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage.io import imread
-from ITK_TransformImage import elastix_transformation, displacement_field_elastix
+from ITK_TransformImage import *
 from tqdm import tqdm
 
 data = np.load('data/post_displacement.npy', allow_pickle=True).item()
@@ -50,8 +50,8 @@ for ts in tqdm(range(1,51)):
 
 x = range(0,51)
 plt.figure()
-plt.plot(x, data_emma, color='blue', label = 'emmas')
-plt.plot(x, elastix_x*-1, color='magenta', label = 'elastix')
+plt.plot(x, data_emma, color='blue', label = 'Optical Flow')
+plt.plot(x, elastix_x*-1, color='magenta', label = 'Elastix')
 plt.plot(x, data_sam, color='green', label = 'sam')
 plt.title('Post Displacement')
 # axs[1].annotate('R2=%2.3f' % r2_y, (0.05,0.9), xycoords='axes fraction')

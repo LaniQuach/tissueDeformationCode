@@ -18,11 +18,11 @@ mask2 = 'fibrotug_2/transformingTestImage/Mask_25.png'
 parameterFileName = 'fibrotug_2/data/parameters_BSpline.txt'
 
 imageArrays = imageToArray(imageFileName1, imageFileName2, mask1, mask2)
-display_bothImages(imageArrays[0], imageArrays[1])
+display_bothImages(imageArrays[0], imageArrays[1], True)
 
 #Elastix functionality
-displacementField = displacement_field_elastix(imageArrays[0], imageArrays[1], parameterFileName)
+displacementField = displacement_field_elastix(imageArrays[0], imageArrays[1], parameterFileName, mask2)
 display_save_displacement(displacementField)
 
 #Comparisions
-displayComparisionPlots(displacementField[:,:,0], displacementField[:,:,1], mask2, False)
+displayComparisionPlots(displacementField[:,:,0], displacementField[:,:,1], mask2, True)
