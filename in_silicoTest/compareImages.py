@@ -69,17 +69,17 @@ print("min: ", minVal)
 fig = plt.figure(figsize=(8, 5))
 
 fig.add_subplot(2,2,1)
-fixed = plt.imshow(ogArray, vmin = 0, vmax = 10280)
+fixed = plt.imshow(ogArray, vmin = 0, vmax = 255)
 plt.axis('off')
 plt.title("Relaxed", fontsize = 20)
 
 fig.add_subplot(2,2,2)
-moving = plt.imshow(moving_array, vmin = 0, vmax = 10280)
+moving = plt.imshow(moving_array, vmin = 0, vmax = 255)
 plt.axis('off')
 plt.title("Contracted", fontsize = 20)
 
 fig.add_subplot(2,2,3)
-result = plt.imshow(transformedArray, vmin = 0, vmax = 10280)
+result = plt.imshow(transformedArray, vmin = 0, vmax = 255)
 plt.axis('off')
 plt.title("Elastix Image", fontsize = 20)
 

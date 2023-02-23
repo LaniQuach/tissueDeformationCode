@@ -45,12 +45,14 @@ rel_error[newArray_orig != 0] = (newArray_transform[newArray_orig != 0]
 outArray = np.subtract(newArray_transform, newArray_orig)
 
 plt.figure()
-result = plt.imshow(outArray)
+result = plt.imshow(outArray, cmap='plasma')
 plt.axis('off')
-plt.colorbar(result)
-plt.savefig('output/errorDifference.png')
+cbar = plt.colorbar(result)
+cbar.set_label(label = 'error', size = 15)
+plt.title('Relative Error')
+plt.savefig('output/errorDifference.png', dpi = 200)
 
-avg = np.mean(rel_error)
+avg = np.mean(np.abs(rel_error))
 maxVal = np.max(np.abs(outArray))
 minVal = np.min(np.abs(outArray))
 std = np.std(rel_error)

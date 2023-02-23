@@ -77,8 +77,9 @@ axs[0].set_xlabel("analytical")
 axs[0].set_ylabel("elastix")
 
 axs[1].scatter(analytical_disp['y'], elastix_disp['y'], marker = '.', color='gold')
-x2 = [-8,2]
+x2 = [-8,7]
 axs[1].plot(x2, x2, color = 'blue')
+axs[1].set_xlim(-8, 7)
 axs[1].set_title('y direction')
 axs[1].annotate('R2=%2.3f' % r2_y, (0.05,0.9), xycoords='axes fraction')
 axs[1].annotate('y=%2.3f' % slope_y + 'x + %2.3f' % intercept_y, (0.05,0.85), xycoords='axes fraction')

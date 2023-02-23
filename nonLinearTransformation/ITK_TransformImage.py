@@ -96,18 +96,19 @@ fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
 im3 = axs[1].imshow(deformation_field[:,:,0])
 divider = make_axes_locatable(axs[1])
 cax = divider.append_axes('right', size='5%', pad=0.05)
-fig.colorbar(im3, cax=cax, orientation='vertical');
+cbar1 = fig.colorbar(im3, cax=cax, orientation='vertical');
+cbar1.set_label(label = 'displacement (pixels)', size = 15)
 
 im2 = axs[0].imshow(deformation_field[:,:,1])
 divider = make_axes_locatable(axs[0])
 cax = divider.append_axes('right', size='5%', pad=0.05)
-fig.colorbar(im2, cax=cax, orientation='vertical');
+cbar = fig.colorbar(im2, cax=cax, orientation='vertical');
+cbar.set_label(label = 'displacement (pixels)', size = 15)
 
+axs[0].set_title('Displacement Field X', fontsize=30)
+axs[1].set_title('Displacement Field Y', fontsize=30)
 
-axs[0].set_title('Deformation Field X', fontsize=30)
-axs[1].set_title('Deformation Field Y', fontsize=30)
-
-plt.savefig('output/deformationField.png')
+plt.savefig('output/displacementField.png')
 
 #as a note next time save the above file with the colorbar being the same for both
 
