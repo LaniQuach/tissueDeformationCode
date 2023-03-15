@@ -97,11 +97,11 @@ axs[1].annotate('R2=%2.3f' % r2_y, (0.05,0.9), xycoords='axes fraction')
 axs[1].annotate('y=%2.3f' % slope_y + 'x + %2.3f' % intercept_y, (0.05,0.85), xycoords='axes fraction')
 axs[1].set_xlabel("analytical")
 
-fig.suptitle(' In-Silico Emmas v Analytical Comparsion Plots', fontsize=12)
+fig.suptitle(' In-Silico Emmas v Analytical Comparison Plots', fontsize=12)
 txt="error: %2.3f" % error_emmas
 plt.figtext(0.5, 0.01, txt, wrap=True, horizontalalignment='center', fontsize=9)
 
-plt.savefig('comparisionPlots/Emma_v_Analytical_plot.png')
+plt.savefig('comparisionPlots/Emma_v_Analytical_plot.png', dpi = 200)
 
 
 

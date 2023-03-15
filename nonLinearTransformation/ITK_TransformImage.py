@@ -77,7 +77,10 @@ plt.savefig('output/elastixResults.png')
 
 ######### Deformation Field #########
 deformation_field = itk.transformix_deformation_field(moving_image, result_transform_parameters)
+defArray = itk.GetArrayFromImage(deformation_field).astype(float)*0.908
 
+np.save('output/analytical_x.npy', defArray[:,:,0])
+np.save('output/analytical_y.npy', defArray[:,:,1])
 # write 
 # array = itk.GetArrayFromImage(fixed_image)
 # file = open('output/original_outputArray.txt', 'w')
@@ -91,24 +94,26 @@ deformation_field = itk.transformix_deformation_field(moving_image, result_trans
 
 #Plot images
 fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
-# plt.figsize=[100,100]
-
-im3 = axs[1].imshow(deformation_field[:,:,0])
+im3 = axs[1].imshow(defArray[:,:,0])
 divider = make_axes_locatable(axs[1])
 cax = divider.append_axes('right', size='5%', pad=0.05)
-cbar1 = fig.colorbar(im3, cax=cax, orientation='vertical');
-cbar1.set_label(label = 'displacement (pixels)', size = 15)
+cbar = fig.colorbar(im3, cax=cax, orientation='vertical');
+cbar.set_label('displacement (pixels)', fontsize = 25)
 
-im2 = axs[0].imshow(deformation_field[:,:,1])
+cbar.ax.tick_params(labelsize=20)
+
+im2 = axs[0].imshow(defArray[:,:,1]*-1)
 divider = make_axes_locatable(axs[0])
 cax = divider.append_axes('right', size='5%', pad=0.05)
-cbar = fig.colorbar(im2, cax=cax, orientation='vertical');
-cbar.set_label(label = 'displacement (pixels)', size = 15)
-
+cbar2 = fig.colorbar(im2, cax=cax, orientation='vertical');
+cbar2.set_label('displacement (pixels)', fontsize = 25)
+cbar2.ax.tick_params(labelsize=20)
+axs[0].axis('off')
+axs[1].axis('off')
 axs[0].set_title('Displacement Field X', fontsize=30)
 axs[1].set_title('Displacement Field Y', fontsize=30)
 
-plt.savefig('output/displacementField.png')
+plt.savefig('output/displacementField.png', dpi = 200)
 
 #as a note next time save the above file with the colorbar being the same for both
 
