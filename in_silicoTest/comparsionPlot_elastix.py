@@ -10,7 +10,7 @@ from skimage.io import imread
 from scipy.stats import linregress
 
 
-def displayComparisionPlots(displacementArray_x, displacementArray_y, analyticalDisp_x, analyticalDisp_y, movingMaskFileName, save):
+def displayComparisionPlots(displacementArray_x, displacementArray_y, analyticalDisp_x, analyticalDisp_y, movingMaskFileName, frame, save):
     """
     displayComparisionPlots displays two different sets of displacement data to one another 
 
@@ -38,27 +38,27 @@ def displayComparisionPlots(displacementArray_x, displacementArray_y, analytical
     #use these values to find coordinates to track on elastix's displacement field
     x_0 = np.round(pos['x'][:,0],0).astype(int)
     y_0 = np.round(pos['y'][:,0],0).astype(int)
-    x_45 = np.round(pos['x'][:,45],0).astype(int)
-    y_45 = np.round(pos['y'][:,45],0).astype(int)
+    x_contracted = np.round(pos['x'][:,frame],0).astype(int)
+    y_contracted = np.round(pos['y'][:,frame],0).astype(int)
     
-    x_0[mask[x_45, y_45] == 0] = -1 
-    y_0[mask[x_45, y_45] == 0] = -1 
-    x_45[mask[x_45, y_45] == 0] = -1 
-    y_45[mask[x_45, y_45] == 0] = -1 
+    x_0[mask[x_contracted, y_contracted] == 0] = -1 
+    y_0[mask[x_contracted, y_contracted] == 0] = -1 
+    x_contracted[mask[x_contracted, y_contracted] == 0] = -1 
+    y_contracted[mask[x_contracted, y_contracted] == 0] = -1 
      
     x_0 = x_0[x_0 > -1] 
     y_0 = y_0[y_0 > -1] 
-    x_45 = x_45[x_45 > -1] 
-    y_45 = y_45[y_45 > -1] 
+    x_contracted = x_contracted[x_contracted > -1] 
+    y_contracted = y_contracted[y_contracted > -1] 
     
     #Calculate the displacement based on original and contracted images
     analytical_disp = {}
-    analytical_disp['x'] = analytical_x[x_45, y_45]
-    analytical_disp['y'] = analytical_y[x_45, y_45]
+    analytical_disp['x'] = analytical_x[x_contracted, y_contracted]
+    analytical_disp['y'] = analytical_y[x_contracted, y_contracted]
     
     elastix_disp = {}
-    elastix_disp['x'] = elastix_x[x_45, y_45]
-    elastix_disp['y'] = elastix_y[x_45, y_45]
+    elastix_disp['x'] = elastix_x[x_contracted, y_contracted]
+    elastix_disp['y'] = elastix_y[x_contracted, y_contracted]
     
     #linear regression
     lres_x = linregress(analytical_disp['x'],  elastix_disp['x'])
@@ -100,7 +100,7 @@ def displayComparisionPlots(displacementArray_x, displacementArray_y, analytical
     fig.suptitle('Insilico Elastix v Analytical Flow Comparison Plots', fontsize=12)
     
     if save:
-        plt.savefig('comparisionPlots/Analytical_v_Elastics_plot.png', dpi = 200)
+        plt.savefig('comparisionPlots/Analytical_v_Elastics_plot_%i' % frame + '.png', dpi = 200)
 
 
 

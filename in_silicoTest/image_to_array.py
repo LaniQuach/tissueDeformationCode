@@ -58,7 +58,7 @@ def imageToArrayWithoutMask(imageFileName1, imageFileName2):
     return [image_array, image_2_array]
       
 
-def display_bothImages(image_array, image_2_array, save):
+def display_bothImages(image_array, image_2_array, name, save):
     # Visualize
     fig, axs = plt.subplots(2, 1, num=1, clear=True)
     axs[0].imshow(image_array, cmap = 'Greys')
@@ -71,7 +71,7 @@ def display_bothImages(image_array, image_2_array, save):
     axs[1].set_title('Contracted')
     
     if save:
-        plt.savefig('output/original_contracted_image', dpi = 210)
+        plt.savefig('output/' + name + '.png', dpi = 210)
 
 
 

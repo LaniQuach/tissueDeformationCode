@@ -116,7 +116,7 @@ def displacement_field_elastix_withoutMask(originalArray, movingArray, parameter
     
     return defArray
 
-def display_save_displacement(defArray, save):
+def display_save_displacement(defArray, name, save):
     #Plot images
     fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
     im3 = axs[1].imshow(defArray[:,:,0], vmin = -10, vmax = 10)
@@ -141,7 +141,7 @@ def display_save_displacement(defArray, save):
     axs[1].set_title('Displacement Field X', fontsize=30)
     
     if save: 
-        plt.savefig('output/Displacement.png')
+        plt.savefig('output/' + name + '.png', dpi = 200)
     
 
     # np.save('comparisionPlots/displacement_x.npy', defArray[:,:,0])
