@@ -5,7 +5,7 @@ Created on Mon Mar 13 23:14:28 2023
 @author: laniq
 """
 
-import ITK_TransformImage as itk
+import ITK_TransformImage as itkT
 import image_to_array as img
 import comparsionPlot_elastix as cmp
 import extractImages as exti
@@ -38,8 +38,8 @@ imageArrays = img.imageToArray(imageFileName1, imageFileName2, mask1, mask2)
 img.display_bothImages(imageArrays[0], imageArrays[1], 'originalContractedWithPosts', True)
 
 #Elastix functionality
-displacementField = itk.displacement_field_elastix(imageArrays[0], imageArrays[1], parameterFileName, mask2)
-itk.display_save_displacement(displacementField, 'outputDispField_withPosts', True)
+displacementField = itkT.displacement_field_elastix(imageArrays[0], imageArrays[1], parameterFileName, mask2)
+itkT.display_save_displacement(displacementField, 'outputDispField_withPosts', True)
 
 #Comparisions
 cmp.displayComparisionPlots(displacementField[:,:,0], displacementField[:,:,1], analytical_disp['x'], analytical_disp['y'], mask2, contractedFrame, True)
