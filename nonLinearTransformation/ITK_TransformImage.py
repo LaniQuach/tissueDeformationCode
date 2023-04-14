@@ -81,39 +81,35 @@ defArray = itk.GetArrayFromImage(deformation_field).astype(float)*0.908
 
 np.save('output/analytical_x.npy', defArray[:,:,0])
 np.save('output/analytical_y.npy', defArray[:,:,1])
-# write 
-# array = itk.GetArrayFromImage(fixed_image)
-# file = open('output/original_outputArray.txt', 'w')
-# file.write(" ".join(str(x) for x in array))
-# file.close()
 
-# # Write the raw data to a file
-# # file = open('output/outputDeformationField.txt', 'w')
-# # file.write(" ".join(str(x) for x in deformation_field))
-# # file.close()
-
-#Plot images
 fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
 im3 = axs[1].imshow(defArray[:,:,0])
+#, vmin = -15, vmax = 15
 divider = make_axes_locatable(axs[1])
 cax = divider.append_axes('right', size='5%', pad=0.05)
 cbar = fig.colorbar(im3, cax=cax, orientation='vertical');
 cbar.set_label('displacement (pixels)', fontsize = 25)
+cbar.ax.tick_params(labelsize=30)
 
-cbar.ax.tick_params(labelsize=20)
 
 im2 = axs[0].imshow(defArray[:,:,1]*-1)
-divider = make_axes_locatable(axs[0])
-cax = divider.append_axes('right', size='5%', pad=0.05)
-cbar2 = fig.colorbar(im2, cax=cax, orientation='vertical');
-cbar2.set_label('displacement (pixels)', fontsize = 25)
-cbar2.ax.tick_params(labelsize=20)
+#, vmin = -5, vmax = 5
+divider1 = make_axes_locatable(axs[0])
+cax1 = divider1.new_vertical(size='5%', pad=0.2, pack_start = True)
+fig.add_axes(cax1)
+cbar1 = fig.colorbar(im2, cax = cax1, orientation = 'horizontal')
+cbar1.set_label('displacement (pixels)', fontsize = 25)
+cbar1.ax.tick_params(labelsize=25)
+
+
 axs[0].axis('off')
 axs[1].axis('off')
-axs[0].set_title('Displacement Field X', fontsize=30)
-axs[1].set_title('Displacement Field Y', fontsize=30)
+axs[0].set_title('Displacement Field Y', fontsize=30)
+axs[1].set_title('Displacement Field X', fontsize=30)
 
-plt.savefig('output/displacementField.png', dpi = 200)
+
+plt.savefig('output/' + 'displacement' + '.png', dpi = 200)
+
 
 #as a note next time save the above file with the colorbar being the same for both
 

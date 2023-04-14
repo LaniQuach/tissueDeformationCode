@@ -17,25 +17,12 @@ ogArray = np.load('transformingTestImage/originalArray.npy')
 moving_array = np.load('transformingTestImage/transformedArray.npy')
 transformedArray = np.load('output/elastixResultImage_Array.npy')
 
-# #Normalize values to 0-1
-# maxValOG = np.max(ogArray)
-# minValOG = np.min(ogArray)
-# ogArray = (ogArray-minValOG)/(maxValOG-minValOG)  
-
-# maxVal_Transformed = np.max(transformedArray)
-# minVal_Transformed = np.min(transformedArray)
-# transformedArray = (transformedArray-minVal_Transformed)/(maxVal_Transformed-minVal_Transformed)  
-# #####
-
 #crop the two arrays to just the M logo
 centerpointX = transformedArray.shape[1]//2
 centerpointY = transformedArray.shape[0]//2
 
 newArray_orig = ogArray[centerpointY-90:centerpointY+75,centerpointX-110:centerpointX+120]
 newArray_transform = transformedArray[centerpointY-90:centerpointY+75,centerpointX-110:centerpointX+120]
-
-# newArray_orig = ogArray
-# newArray_transform = transformedArray
 
 #calculate error
 rel_error = np.zeros(newArray_transform.shape)

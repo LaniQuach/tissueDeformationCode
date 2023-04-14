@@ -55,7 +55,7 @@
 // unrealistic deformations. This is a very important setting!
 // We recommend tuning it for every specific application. It is
 // difficult to come up with a good 'default' value.
-(FinalGridSpacingInPhysicalUnits 28)
+(FinalGridSpacingInPhysicalUnits 15)
 
 // Alternatively, the grid spacing can be specified in voxel units.
 // To do that, uncomment the following line and comment/remove
@@ -80,7 +80,7 @@
 // for the mutual information. 16 or 32 usually works fine.
 // You could also employ a hierarchical strategy:
 //(NumberOfHistogramBins 16 32 64)
-(NumberOfHistogramBins 16)
+(NumberOfHistogramBins 64)
 
 // If you use a mask, this option is important. 
 // If the mask serves as region of interest, set it to false.

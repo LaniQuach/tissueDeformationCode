@@ -12,7 +12,7 @@ from numpy import asarray
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 #load both arrays
-def elastix_transformation(originalArray, movingArray, parameterFileName):
+def elastix_transformation(originalArray, movingArray, parameterObject, isFile):
     """
     elastix_transformation utalizes the elastix functionality to attempt to transform 
     moving images back to it's original image
@@ -29,15 +29,11 @@ def elastix_transformation(originalArray, movingArray, parameterFileName):
     moving_image = itk.GetImageFromArray(moving_array)
  
     # Import Default Parameter Map
-    parameter_object = itk.ParameterObject.New()
-    
-    # Load custom parameter maps from .txt file
-    parameter_object.AddParameterFile(parameterFileName)
-    
-    # Load Elastix Image Filter Object
     elastix_object = itk.ElastixRegistrationMethod.New(fixed_image, moving_image)
-    elastix_object.SetParameterObject(parameter_object)
-    
+
+    elastix_object.SetParameterObject(parameterObject)
+    # print(parameterObject)
+
     # Set additional options
     elastix_object.SetLogToConsole(False)
     
@@ -49,6 +45,8 @@ def elastix_transformation(originalArray, movingArray, parameterFileName):
     result_array = itk.GetArrayFromImage(result_image)
     
     return elastix_object.GetTransformParameterObject()
+
+
 
 def display_save_Image(image, vmin1, vmax1, save):
     """
@@ -66,7 +64,7 @@ def display_save_Image(image, vmin1, vmax1, save):
     if save:
         plt.savefig('fibro_tug/output/', image, '.png')
     
-def displacement_field_elastix(movingImage, resultParameters, maskFileName):
+def displacement_field_elastix(originalArray, movingArray, parameterObject, maskFileName, isFile):
     """
     displacement_field_elastix creates a displacement field of the two images brought in
 
@@ -75,7 +73,8 @@ def displacement_field_elastix(movingImage, resultParameters, maskFileName):
     :param parameterFileName: name of the file with the ideal parameters for elastix transformation
     :return: the displacement field array
     """ 
-    
+    resultParameters = elastix_transformation(originalArray, movingArray, parameterObject, isFile)
+    movingImage = itk.GetImageFromArray(movingArray)
     deformation_field = itk.transformix_deformation_field(movingImage, resultParameters)
     defArray = itk.GetArrayFromImage(deformation_field).astype(float)*0.908
     
@@ -100,29 +99,32 @@ def displacement_field_elastix_withoutmask(originalArray, movingArray, parameter
     
     return defArray
 
-def display_save_displacement(defArray):
+def display_save_displacement(defArray, name, save):
     #Plot images
     fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
-    im3 = axs[1].imshow(defArray[:,:,0], vmin = -15, vmax = 15)
+    im3 = axs[1].imshow(defArray[:,:,0], vmin = -10, vmax = 10)
+    #, vmin = -15, vmax = 15
     divider = make_axes_locatable(axs[1])
     cax = divider.append_axes('right', size='5%', pad=0.05)
     cbar = fig.colorbar(im3, cax=cax, orientation='vertical');
     cbar.set_label('displacement (pixels)', fontsize = 25)
-
     cbar.ax.tick_params(labelsize=30)
     
-    im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -5, vmax = 5)
+    
+    im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -7, vmax = 7)
+    #, vmin = -5, vmax = 5
     divider = make_axes_locatable(axs[0])
     cax = divider.append_axes('right', size='5%', pad=0.05)
     cbar2 = fig.colorbar(im2, cax=cax, orientation='vertical');
-    cbar2.set_label('displacement (pixels)', fontsize = 25)
     cbar2.ax.tick_params(labelsize=30)
+    cbar2.set_label('displacement (pixels)', fontsize = 25)
     axs[0].axis('off')
     axs[1].axis('off')
     axs[0].set_title('Displacement Field Y', fontsize=30)
     axs[1].set_title('Displacement Field X', fontsize=30)
     
-    plt.savefig('fibrotug_2/output/Displacement.png', dpi = 180)
+    if save: 
+        plt.savefig('output/' + name + '.png', dpi = 200)
     
 
 

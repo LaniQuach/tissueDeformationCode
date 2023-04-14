@@ -119,29 +119,39 @@ def displacement_field_elastix_withoutMask(originalArray, movingArray, parameter
 def display_save_displacement(defArray, name, save):
     #Plot images
     fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
-    im3 = axs[1].imshow(defArray[:,:,0], vmin = -10, vmax = 10)
+    im3 = axs[1].imshow(defArray[:,:,0], vmin = -10, vmax = 10, cmap='BrBG')
     #, vmin = -15, vmax = 15
-    divider = make_axes_locatable(axs[1])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    cbar = fig.colorbar(im3, cax=cax, orientation='vertical');
+    # divider = make_axes_locatable(axs[1])
+    # cax = divider.new_vertical(size='5%', pad=0.6, pack_start = True)
+    # cbar = fig.colorbar(im3, cax=cax, orientation='horizontal');
+    # cbar.set_label('displacement (pixels)', fontsize = 25)
+    # cbar.ax.tick_params(labelsize=30)
+    
+    divider1 = make_axes_locatable(axs[1])
+    cax = divider1.new_vertical(size='5%', pad=0.6, pack_start = True)
+    fig.add_axes(cax)
+    cbar = fig.colorbar(im3, cax = cax, orientation = 'horizontal')
     cbar.set_label('displacement (pixels)', fontsize = 25)
-    cbar.ax.tick_params(labelsize=30)
+    cbar.ax.tick_params(labelsize=20)
+
     
-    
-    im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -7, vmax = 7)
-    #, vmin = -5, vmax = 5
+    im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -3, vmax = 7, cmap = 'RdYlBu')
+
     divider = make_axes_locatable(axs[0])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    cbar2 = fig.colorbar(im2, cax=cax, orientation='vertical');
-    cbar2.ax.tick_params(labelsize=30)
+    cax = divider.new_vertical(size='5%', pad=0.6, pack_start = True)
+    fig.add_axes(cax)
+    cbar2 = fig.colorbar(im2, cax = cax, orientation = 'horizontal')
     cbar2.set_label('displacement (pixels)', fontsize = 25)
+    cbar2.ax.tick_params(labelsize=20)
+    
     axs[0].axis('off')
     axs[1].axis('off')
     axs[0].set_title('Displacement Field Y', fontsize=30)
     axs[1].set_title('Displacement Field X', fontsize=30)
     
+    
     if save: 
-        plt.savefig('output/' + name + '.png', dpi = 200)
+        plt.savefig(name + '.png', dpi = 200)
     
 
     # np.save('comparisionPlots/displacement_x.npy', defArray[:,:,0])

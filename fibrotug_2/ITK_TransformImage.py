@@ -64,7 +64,7 @@ def display_save_Image(image, vmin1, vmax1, save):
     plt.axis('off')
     plt.title(image, ' results')
     if save:
-        plt.savefig('fibro_tug/output/', image, '.png')
+        plt.savefig('output/', image, '.png')
     
 def displacement_field_elastix(originalArray, movingArray, parameterFileName, maskFileName):
     """
@@ -101,29 +101,34 @@ def displacement_field_elastix_withoutmask(originalArray, movingArray, parameter
     
     return defArray
 
-def display_save_displacement(defArray):
+def display_save_displacement(defArray, save):
     #Plot images
     fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
-    im3 = axs[1].imshow(defArray[:,:,0], vmin = -15, vmax = 15)
-    divider = make_axes_locatable(axs[1])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    cbar = fig.colorbar(im3, cax=cax, orientation='vertical');
-    cbar.set_label('displacement (pixels)', fontsize = 25)
-
-    cbar.ax.tick_params(labelsize=30)
+    im3 = axs[1].imshow(defArray[:,:,0], vmin = -12, vmax = 12, cmap = 'BrBG')
     
-    im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -5, vmax = 5)
-    divider = make_axes_locatable(axs[0])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    cbar2 = fig.colorbar(im2, cax=cax, orientation='vertical');
+    divider = make_axes_locatable(axs[1])
+    cax = divider.new_vertical(size='5%', pad=0.6, pack_start = True)
+    fig.add_axes(cax)
+    cbar = fig.colorbar(im3, cax = cax, orientation = 'horizontal')
+    cbar.set_label('displacement (pixels)', fontsize = 25)
+    cbar.ax.tick_params(labelsize=20)
+
+    
+    im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -5, vmax = 3, cmap = 'RdYlBu')
+    divider1 = make_axes_locatable(axs[0])
+    cax = divider1.new_vertical(size='5%', pad=0.6, pack_start = True)
+    fig.add_axes(cax)
+    cbar2 = fig.colorbar(im2, cax = cax, orientation = 'horizontal')
     cbar2.set_label('displacement (pixels)', fontsize = 25)
-    cbar2.ax.tick_params(labelsize=30)
+    cbar2.ax.tick_params(labelsize=20)
+    
+    
     axs[0].axis('off')
     axs[1].axis('off')
-    axs[0].set_title('Displacement Field Y', fontsize=30)
-    axs[1].set_title('Displacement Field X', fontsize=30)
+
     
-    plt.savefig('fibrotug_2/output/Displacement.png', dpi = 180)
+    if(save):
+        plt.savefig('output/Displacement.png', dpi = 180)
     
 
 

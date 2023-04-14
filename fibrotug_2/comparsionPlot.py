@@ -22,8 +22,8 @@ def displayComparisionPlots(displacementArray_x, displacementArray_y, movingMask
     
     #Emma's data
     pos = {}
-    pos['x'] = np.loadtxt('fibrotug_2/comparisionPlots' + '/beat%i' % beat + '_col.txt')
-    pos['y'] = np.loadtxt('fibrotug_2/comparisionPlots' + '/beat%i' % beat + '_row.txt')
+    pos['x'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_col.txt')
+    pos['y'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_row.txt')
     
     #Elastix data
     elastix_x = displacementArray_x.T
@@ -112,18 +112,19 @@ def displayComparisionPlots(displacementArray_x, displacementArray_y, movingMask
     fig.suptitle('FibroTug Elastix v Optical Flow Comparison Plots', fontsize=12)
     
     if save:
-        plt.savefig('fibrotug_2/comparisionPlots/comparison_plot.png', dpi = 180)
+        plt.savefig('comparisionPlots/comparison_plot.png', dpi = 180)
 
 
-def scatter(displacementArray_y, movingMaskFileName):
+def scatter(defArray, movingMaskFileName):
     beat = 1
     
     #Emma's data
     pos = {}
-    pos['x'] = np.loadtxt('fibrotug_2/comparisionPlots' + '/beat%i' % beat + '_col.txt')
-    pos['y'] = np.loadtxt('fibrotug_2/comparisionPlots' + '/beat%i' % beat + '_row.txt')
+    pos['x'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_col.txt')
+    pos['y'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_row.txt')
     
     mask = np.asarray(imread(movingMaskFileName, as_gray=True)).T
+    
     
     #use these values to find coordinates to track on elastix's displacement field
     x_0 = np.round(pos['x'][:,0],0).astype(int)
@@ -136,29 +137,20 @@ def scatter(displacementArray_y, movingMaskFileName):
     x_25_float = pos['x'][:,25]
     y_25_float = pos['y'][:,25]
     
-    #remove any coordinates that are not in elastix's displacement fields
-    # x_0_float[mask[x_25, y_25] == 0] = -1
-    # y_0_float[mask[x_25, y_25] == 0] = -1
-    # x_25_float[mask[x_25, y_25] == 0] = -1
-    # y_25_float[mask[x_25, y_25] == 0] = -1
+    fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
     
-    # x_0_float[mask[x_25, y_25] == 0] = -1
-    # y_0_float[mask[x_25, y_25] == 0] = -1
-    # x_25_float[mask[x_25, y_25] == 0] = -1
-    # y_25_float[mask[x_25, y_25] == 0] = -1
+    im = axs[1].imshow(defArray[:,:,0], vmin = -12, vmax = 12, cmap = 'BrBG') #x direction
+    axs[1].scatter(x_0_float, y_0_float, c=(x_25_float - x_0_float), vmin=-15, vmax=15, edgecolors='k', linewidth=0.5, s = 200, cmap = 'BrBG')
+
+    im2 = axs[0].imshow(defArray[:,:,1]*-1, vmin = -5, vmax = 3, cmap = 'RdYlBu')
+    axs[0].scatter(x_0_float, y_0_float, c=(y_25_float - y_0_float)*-1, vmin=-5, vmax=5, edgecolors='k', linewidth=0.5, s = 200, cmap = 'RdYlBu')
+
+    axs[0].axis('off')
+    axs[1].axis('off')
+    axs[0].set_title('Displacement Field Y', fontsize=30)
+    axs[1].set_title('Displacement Field X', fontsize=30)
     
-    # x_0_float = x_0_float[x_0_float >-1]
-    # y_0_float = y_0_float[y_0_float > -1]
-    # x_25_float = x_25_float[x_25_float > -1]
-    # y_25_float = y_25_float[y_25_float > -1]
-    
-    
-    plt.figure()
-    im = plt.imshow(displacementArray_y, vmin=-5, vmax=5)
-    plt.scatter(x_0_float, y_0_float, c=y_25_float - y_0_float, vmin=-5, vmax=5, edgecolors='k', linewidth=0.5)
-    plt.colorbar(im)
-    plt.axis('off')
-    plt.title('Displacement Y')
+    plt.savefig('output/opticalFlowResultsX.png', dpi = 180)
 
 
 

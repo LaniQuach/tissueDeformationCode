@@ -17,19 +17,19 @@ pos['x'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_col.txt')
 pos['y'] = np.loadtxt('comparisionPlots' + '/beat%i' % beat + '_row.txt')
 
 analytical_x = np.load('comparisionPlots/analytical_dispx_45.npy').T
-analytical_y = (np.load('comparisionPlots/analytical_dispy_45.npy')*-1).T
+analytical_y = (np.load('comparisionPlots/analytical_dispy_45.npy')).T
 
 mask = np.asarray(imread('transformingTestImage/Mask_41.png', as_gray=True)).T
 
 x_0 = np.round(pos['x'][:,0],0).astype(int)
 y_0 = np.round(pos['y'][:,0],0).astype(int)
-x_41= np.round(pos['x'][:,41],0).astype(int)
-y_41 = np.round(pos['y'][:,41],0).astype(int)
+x_41= np.round(pos['x'][:,45],0).astype(int)
+y_41 = np.round(pos['y'][:,45],0).astype(int)
 
 x_0_float = pos['x'][:,0]
 y_0_float = pos['y'][:,0]
-x_41_float = pos['x'][:,41]
-y_41_float = pos['y'][:,41]
+x_41_float = pos['x'][:,45]
+y_41_float = pos['y'][:,45]
 
 x_0_float[mask[x_41, y_41] == 0] = -1
 y_0_float[mask[x_41, y_41] == 0] = -1
