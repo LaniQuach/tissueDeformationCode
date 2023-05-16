@@ -8,13 +8,13 @@ Created on Fri Jan 20 16:43:42 2023
 
 from skimage.transform import warp
 from skimage.io import imread
-from skimage.color import rgb2gray
+from skimage.io import imsave
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-def transformImage(imageLocation):
-    image = imread(imageLocation, as_gray=True)
+def createImage(image_fldr, output_fldr):
+    image = imread(image_fldr, as_gray=True)
 
     def stretch(image):
         
@@ -45,17 +45,15 @@ def transformImage(imageLocation):
         return warp_image
     
     warpedImage = stretch(image)
-    
-    np.save('originalArray.npy', image)
-    np.save('transformedArray.npy', warpedImage)
+    imsave(output_fldr, warpedImage)
+
+    # np.save(output_fldr + '_originalArray.npy', image)
+    # np.save(output_fldr + '_transformedArray.npy', warpedImage)
       
     # Visualize
     fig, axs = plt.subplots(2, 1, num=1, clear=True)
     axs[0].imshow(image)
     axs[1].imshow(warpedImage)
-    plt.savefig('transformedImage.png')
-
-transformImage('newTestImage.png')
 
 
 
