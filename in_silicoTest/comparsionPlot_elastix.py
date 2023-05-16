@@ -35,8 +35,8 @@ def displayComparisionPlots(elastix_fldr, tracking_fldr, analytical_fldr, out_fl
     elastix_y = (displacementArray_y).T
 
     #Analytical data
-    analyticalDisp_x = np.load(analytical_fldr + 'analytical_dispx_%i' %frame + '.npy')
-    analyticalDisp_y = np.load(analytical_fldr + 'analytical_dispy_%i' %frame + '.npy')
+    analyticalDisp_x = np.load(analytical_fldr + 'analytical_dispx_%i' %frame + '_withPosts.npy')
+    analyticalDisp_y = np.load(analytical_fldr + 'analytical_dispy_%i' %frame + '_withPosts.npy')
     analytical_x = analyticalDisp_x.T
     analytical_y = analyticalDisp_y.T
 

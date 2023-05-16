@@ -20,6 +20,20 @@ transformedArray = np.load('output/elastixResultImage_Array.npy')
 print(np.max(ogArray))
 print(np.max(transformedArray))
 
+# #Normalize values to 0-1
+# maxValOG = np.max(ogArray)
+# minValOG = np.min(ogArray)
+# ogArray = (ogArray-minValOG)/(maxValOG-minValOG)  
+
+# maxVal_Transformed = np.max(transformedArray)
+# minVal_Transformed = np.min(transformedArray)
+# transformedArray = (transformedArray-minVal_Transformed)/(maxVal_Transformed-minVal_Transformed)  
+# #####
+
+
+# print(np.max(ogArray))
+# print(np.max(transformedArray))
+
 #crop the two arrays to just the M logo
 centerpointX = transformedArray.shape[1]//2
 centerpointY = transformedArray.shape[0]//2
@@ -37,7 +51,7 @@ rel_error[newArray_orig != 0] = (newArray_transform[newArray_orig != 0]
 outArray = np.subtract(newArray_transform, newArray_orig)
 
 plt.figure()
-result = plt.imshow(outArray)
+result = plt.imshow(outArray, vmin = -20000, vmax = 20000)
 plt.axis('off')
 plt.colorbar(result)
 plt.savefig('output/errorDifference.png')
@@ -52,25 +66,25 @@ print("standard deviation", std)
 print("max: ", maxVal)
 print("min: ", minVal)
 
-fig = plt.figure(figsize=(8, 5))
+fig = plt.figure(figsize=(8, 12))
 
 fig.add_subplot(2,2,1)
-fixed = plt.imshow(ogArray, vmin = 0, vmax = 10280)
+fixed = plt.imshow(ogArray, vmin = 0, vmax = 65535)
 plt.axis('off')
-plt.title("Relaxed", fontsize = 20)
+plt.title("Original Image", fontsize = 20)
 
 fig.add_subplot(2,2,2)
-moving = plt.imshow(moving_array, vmin = 0, vmax = 10280)
+moving = plt.imshow(moving_array, vmin = 0, vmax = 65535)
 plt.axis('off')
-plt.title("Contracted", fontsize = 20)
+plt.title("Stretched Image", fontsize = 20)
 
 fig.add_subplot(2,2,3)
-result = plt.imshow(transformedArray, vmin = 0, vmax = 10280)
+result = plt.imshow(transformedArray, vmin = 0, vmax = 65535)
 plt.axis('off')
 plt.title("Elastix Image", fontsize = 20)
 
 fig.add_subplot(2,2,4)
-im = plt.imshow(outArray)
+im = plt.imshow(outArray, vmin = -20000, vmax = 20000)
 plt.colorbar(im)
 plt.axis('off')
 plt.title("Difference", fontsize = 20)

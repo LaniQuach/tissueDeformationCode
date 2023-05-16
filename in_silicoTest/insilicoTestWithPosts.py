@@ -4,42 +4,50 @@ Created on Mon Mar 13 23:14:28 2023
 
 @author: laniq
 """
+import numpy as np
+from skimage import io
+import os
 
-import ITK_TransformImage as itkT
-import image_to_array as img
-import comparsionPlot_elastix as cmp
-import extractImages as exti
+from ITK_TransformImage import displacement_field_elastix, display_save_displacement
+from image_to_array import imageToArray, display_bothImages
+from comparsionPlot_elastix import displayComparisionPlots
 
-tissueName = 'transformingTestImage/warped (2)'
 
-contractedFrame = 41
-exti.getIndividualImages(tissueName, 0)
-exti.getIndividualImages(tissueName, contractedFrame)
+fldr = 'warped_image_post_v2/'
+out_fldr = fldr + 'out/'
+tracking_fldr = fldr + 'contract_analysis/results/'
+if not os.path.exists(out_fldr): os.mkdir(out_fldr)
 
-imageFileName1 = tissueName + '_%i' % 0 + '.png'
-imageFileName2 = tissueName + '_%i' % contractedFrame + '.png'
+ts = 45
 
-mask1 = 'transformingTestImage/Mask_0_withPosts.png'
-mask2 = 'transformingTestImage/Mask_45_withPosts.png'
+mask1 = fldr + 'Mask_45_withPosts.png'
+mask2 = fldr + 'Mask_45_withPosts.png'
 
-analytical_x = cmp.np.load('comparisionPlots' + '/analytical_dispx_%i' % contractedFrame + '_withPosts.npy')
-analytical_y = cmp.np.load('comparisionPlots' + '/analytical_dispy_%i' % contractedFrame + '_withPosts.npy')
+analytical_x = np.load(fldr + 'analytical_dispx_%i' % ts + '.npy').T
+analytical_y = np.load(fldr + 'analytical_dispy_%i' % ts + '.npy').T
 
 analytical_disp = {}
 analytical_disp['x'] = analytical_x[:,:]
 analytical_disp['y'] = analytical_y[:,:]
 
-analytical_disp['y'][mask2==0] = cmp.np.nan
-analytical_disp['x'][mask2==0] = cmp.np.nan
+analytical_disp['y'][mask2==0] = np.nan
+analytical_disp['x'][mask2==0] = np.nan
 
 parameterFileName = 'data/parameters_BSpline.txt'
 
-imageArrays = img.imageToArray(imageFileName1, imageFileName2, mask1, mask2)
-img.display_bothImages(imageArrays[0], imageArrays[1], 'originalContractedWithPosts', True)
+image = io.imread(fldr + 'warped.tif')
+io.imsave(fldr + 'warped_0_posts.png', image[0])
+io.imsave(fldr + 'warped_%i_posts' % ts + '.png', image[ts])
+
+imageArrays = imageToArray(fldr + 'warped_0_posts.png', fldr + 'warped_%i' % ts + '.png')
+
+display_bothImages(imageArrays[0], imageArrays[1], fldr + 'Posts_frame%i' %ts , True)
 
 #Elastix functionality
-displacementField = itkT.displacement_field_elastix(imageArrays[0], imageArrays[1], parameterFileName, mask2)
-itkT.display_save_displacement(displacementField, 'outputDispField_withPosts', True)
+displacementField = displacement_field_elastix(imageArrays[0], imageArrays[1], parameterFileName, mask2)
+display_save_displacement(displacementField, out_fldr + 'dispField_frame%i' % ts + '_Post', True)
+np.save(out_fldr + 'displacement_%i' %ts + '.npy', displacementField)
+
 
 #Comparisions
-cmp.displayComparisionPlots(displacementField[:,:,0], displacementField[:,:,1], analytical_disp['x'], analytical_disp['y'], mask2, contractedFrame, True)
+displayComparisionPlots(out_fldr, tracking_fldr, fldr, out_fldr, mask2, ts, True)
