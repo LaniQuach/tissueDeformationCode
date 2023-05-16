@@ -15,23 +15,13 @@ from comparsionPlot_elastix import displayComparisionPlots
 
 fldr = 'warped_image_v2/'
 out_fldr = fldr + 'out/'
-tracking_fldr = fldr + 'contract_analysis/results/'
+tracking_fldr = fldr
 if not os.path.exists(out_fldr): os.mkdir(out_fldr)
 
 ts = 45
 
 mask1 = fldr + 'Mask_41.png'
 mask2 = fldr + 'Mask_41.png'
-
-analytical_x = np.load(fldr + 'analytical_dispx_%i' % ts + '.npy').T
-analytical_y = np.load(fldr + 'analytical_dispy_%i' % ts + '.npy').T
-
-analytical_disp = {}
-analytical_disp['x'] = analytical_x[:,:]
-analytical_disp['y'] = analytical_y[:,:]
-
-analytical_disp['y'][mask2==0] = np.nan
-analytical_disp['x'][mask2==0] = np.nan
 
 parameterFileName = 'data/parameters_BSpline.txt'
 
@@ -47,7 +37,6 @@ display_bothImages(imageArrays[0], imageArrays[1], fldr + 'noPosts_frame%i' %ts 
 displacementField = displacement_field_elastix(imageArrays[0], imageArrays[1], parameterFileName, mask2)
 display_save_displacement(displacementField, out_fldr + 'dispField_frame%i' % ts + '_noPost', True)
 np.save(out_fldr + 'displacement_%i' %ts + '.npy', displacementField)
-
 
 #Comparisions
 displayComparisionPlots(out_fldr, tracking_fldr, fldr, out_fldr, mask2, ts, True)

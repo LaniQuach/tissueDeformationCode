@@ -35,8 +35,8 @@ def displayComparisionPlots(elastix_fldr, tracking_fldr, analytical_fldr, out_fl
     elastix_y = (displacementArray_y).T
 
     #Analytical data
-    analyticalDisp_x = np.load(analytical_fldr + 'analytical_dispx_%i' %frame + '_withPosts.npy')
-    analyticalDisp_y = np.load(analytical_fldr + 'analytical_dispy_%i' %frame + '_withPosts.npy')
+    analyticalDisp_x = np.load(analytical_fldr + 'analytical_dispx_%i' %frame + '.npy')
+    analyticalDisp_y = np.load(analytical_fldr + 'analytical_dispy_%i' %frame + '.npy')
     analytical_x = analyticalDisp_x.T
     analytical_y = analyticalDisp_y.T
 
@@ -119,20 +119,9 @@ def displayComparisionPlots(elastix_fldr, tracking_fldr, analytical_fldr, out_fl
     axs[1].legend(["Elastix", "Optical Flow"], loc = 'lower right', frameon=False)
     # axs[1].annotate('y=%2.3f' % slope_y + 'x + %2.3f' % intercept_y, (0.05,0.85), xycoords='axes fraction')
     axs[1].set_xlabel("Analytical")
-
-    # fig.suptitle('Insilico Elastix v Analytical Flow Comparison Plots', fontsize=12)
     
     if save:
         plt.savefig(out_fldr + 'Analytical_v_Elastics_plot_%i' % frame + '.png', dpi = 200)
-
-    
-    #error
-    # disp_analytical = np.vstack([analytical_disp['x'], analytical_disp['y']]).T
-    # disp_elastix = np.vstack([elastix_disp['x'], elastix_disp['y']]).T
-    # error_elastix = np.linalg.norm(disp_analytical-disp_elastix)
-    
-
-
 
 
 
