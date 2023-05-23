@@ -108,12 +108,6 @@ def display_save_displacement(defArray, name, save):
     #Plot images
     fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
     im3 = axs[1].imshow(defArray[:,:,0], cmap='BrBG')
-    #, vmin = -15, vmax = 15
-    # divider = make_axes_locatable(axs[1])
-    # cax = divider.new_vertical(size='5%', pad=0.6, pack_start = True)
-    # cbar = fig.colorbar(im3, cax=cax, orientation='horizontal');
-    # cbar.set_label('displacement (pixels)', fontsize = 25)
-    # cbar.ax.tick_params(labelsize=30)
     
     divider1 = make_axes_locatable(axs[1])
     cax = divider1.new_vertical(size='5%', pad=0.6, pack_start = True)
@@ -140,10 +134,4 @@ def display_save_displacement(defArray, name, save):
     
     if save: 
         plt.savefig(name + '.png', dpi = 200)
-    
-
-    # np.save('comparisionPlots/displacement_x.npy', defArray[:,:,0])
-    # np.save('comparisionPlots/displacement_y.npy', defArray[:,:,1]*-1)
-    
-    #as a note next time save the above file with the colorbar being the same for both
 

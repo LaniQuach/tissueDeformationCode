@@ -9,6 +9,7 @@ from ITK_TransformImage import displacement_field_elastix, display_save_displace
 from image_to_array import imageToArray, display_bothImages
 from transformTestImage import transformImage
 from compareImages import compareResults
+from strainOperations import secondDeriv, calculate_defGradient, calculate_strain, display_strain, plot_deriv
 import os
 
 fldr = 'data/'
@@ -31,5 +32,14 @@ display_save_displacement(displacementField, out_fldr + 'dispField', True)
 
 # compare results
 compareResults(targetImageName, stretchedImageName, out_fldr + 'elastixResults.npy', out_fldr)
+
+#STRAINS
+derivatives = secondDeriv(displacementField[:,:,0], displacementField[:,:,1]*-1)
+plot_deriv(derivatives, out_fldr, True)
+defGradient = calculate_defGradient(derivatives)
+strains = calculate_strain(defGradient)
+display_strain(strains, out_fldr, True)
+
+
 
 

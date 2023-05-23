@@ -5,10 +5,9 @@ Created on Mon Feb 20 15:20:47 2023
 @author: laniq
 """
 
-####TEST CASE####
-from ITK_TransformImage import *
-from image_to_array import *
-from comparsionPlot import *
+from ITK_TransformImage import displacement_field_elastix, display_save_displacement
+from image_to_array import imageToArray, display_bothImages
+from comparsionPlot_elastix import displayComparisionPlots
 
 imageFileName1 = 'fibrotug_2/transformingTestImage/A_0.41_01-14-2_rc_ds_0.png'
 imageFileName2 = 'fibrotug_2/transformingTestImage/A_0.41_01-14-2_rc_ds_25.png'
