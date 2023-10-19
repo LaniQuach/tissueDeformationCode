@@ -77,7 +77,6 @@ def plot_deriv(derivMatrix, outfldr, save):
     axs[1][1].set_title('deformation yy direction', fontsize=30)  
     
     plt.suptitle('Deformation Gradient over Test Image', fontsize = 55)
-    plt.show()
       
     if save:
         plt.savefig(outfldr + 'derivative_image.png', dpi = 200)
@@ -150,8 +149,6 @@ def display_strain(strain_matrix, outfldr, save):
     axs[1][1].set_title('Strain tensor yy direction', fontsize=30)  
     
     plt.suptitle('Strain Tensor over Test Image', fontsize = 55)
-    plt.show()
-
     
     if save:
         plt.savefig(outfldr + 'strain_image.png', dpi = 200)

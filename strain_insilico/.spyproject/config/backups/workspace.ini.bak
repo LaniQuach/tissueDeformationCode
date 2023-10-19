@@ -1,0 +1,12 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+project_type = 'empty-project-type'
+recent_files = ['insilico_strain_test.py', 'ITK_TransformImage.py', '..\\..\\OpticalFlowAnalysis\\tutorials\\run_code_elastix.py', '..\\..\\OpticalFlowAnalysis\\tutorials\\run_code.py', '..\\..\\OpticalFlowAnalysis\\src\\microbundlecompute1\\strain_analysis.py', '..\\..\\OpticalFlowAnalysis\\src\\microbundlecompute1\\image_analysis.py', 'visualize_img_mesh1.py']
+
+[main]
+version = 0.2.0
+recent_files = []
+

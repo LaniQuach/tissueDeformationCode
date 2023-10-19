@@ -17,14 +17,10 @@
 # ### Registration
 
 import itk
-import SimpleITK as sitk
 import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image
 from skimage.io import imread
-
-from numpy import asarray
-
+from matplotlib.ticker import FormatStrFormatter
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 def elastix_transformation(originalArray, movingArray, parameterFileName, saveImageArray, outfldr):
@@ -107,6 +103,7 @@ def displacement_field_elastix(originalArray, movingArray, parameterFileName, sa
 def display_save_displacement(defArray, name, save):
     #Plot images
     fig, axs = plt.subplots(1, 2, sharey=True, figsize=[30,30])
+ 
     im3 = axs[1].imshow(defArray[:,:,0], cmap='BrBG')
     #, vmin = -15, vmax = 15
     # divider = make_axes_locatable(axs[1])

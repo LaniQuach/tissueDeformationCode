@@ -36,7 +36,7 @@ plt.savefig('comparisionPlots/locationOfPost.png')
 
 original_array = np.asarray(original_image).astype(np.float32).T
 elastix_x = np.empty([51])
-elastix_x[0] = 0;
+elastix_x[0] = 0
 
 for ts in tqdm(range(1,51)):
     image = imread('data/fibers_2' + '/A_0.41_01-14-2_rc_ds_%i' % ts + '.png', as_gray=True)
